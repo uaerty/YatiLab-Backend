@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI Pipeline (Spring Boot + H2)
 
 on:
   push:
@@ -23,13 +23,13 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # Build with Maven
-      - name: Build with Maven
-        run: mvn -B clean verify
+      # Build & run tests with H2 profile
+      - name: Build with Maven (H2 test profile)
+        run: mvn -B clean verify -Dspring.profiles.active=test
 
       # Package the app
       - name: Package Spring Boot app
-        run: mvn -B package
+        run: mvn -B package -DskipTests
 
       # Upload artifact (optional)
       - name: Upload JAR artifact
