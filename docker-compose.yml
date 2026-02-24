@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  springboot-app:
+    build: ./yatilab   # path to your backend project
+    container_name: springboot-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+
+  react-app:
+    build: ./yati-rnd-lab        # path to your frontend project
+    container_name: react-app
+    ports:
+      - "3000:80"
+    depends_on:
+      - springboot-app
+
+volumes:
+  postgres_data:
