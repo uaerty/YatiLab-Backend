@@ -4,9 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "contacts")
+@Getter
+@Setter
 public class Contact {
 
     @Id
@@ -25,19 +29,8 @@ public class Contact {
     @Size(min = 10, message = "Message must be at least 10 characters long")
     private String message;
 
-    // Getters and setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // Many contacts belong to one user
+    @ManyToOne @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
-    public String getSubject() { return subject; }
-    public void setSubject(String subject) { this.subject = subject; }
-
-    public String getMessage() { return message; }
-    public void setMessage(String message) { this.message = message; }
 }
